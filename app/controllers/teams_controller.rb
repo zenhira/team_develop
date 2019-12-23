@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update destroy entrust]
 
   def index
     @teams = Team.all
@@ -49,6 +49,15 @@ class TeamsController < ApplicationController
 
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
+  end
+
+  def entrust
+    binding.irb
+    user_id = params[:user_id].to_i
+    @new_owner = User.find(user_id)
+    @team.update(owner_id: user_id)
+    TeamMailer.entrust_ownership_mail(@new_owner, @team).deliver
+    redirect_to team_path(@team), notice: "オーナー権限を移動しました"
   end
 
   private
