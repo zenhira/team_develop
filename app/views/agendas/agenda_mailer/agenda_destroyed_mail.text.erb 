@@ -1,0 +1,4 @@
+
+Agenda#agenda_destroyed_mail
+
+<%= @greeting %>, find me in app/views/agenda_mailer/agenda_destroyed_mail.text.erb
