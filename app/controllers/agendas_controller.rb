@@ -24,8 +24,9 @@ class AgendasController < ApplicationController
   def destroy
     members_email = @agenda.team.members.map(&:email)
     members_email.each do |email|
-      AgendaMailer.agenda_destroyed_mail(@agenda, email).deliver
+      AgendaMailer.agenda_destroyed_mail(email).deliver
     end
+    
     @agenda.destroy
     redirect_to dashboard_url, notice: "アジェンダを削除しました"
   end
